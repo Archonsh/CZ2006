@@ -21,14 +21,22 @@ from users.views import ActiveView, ResetView
 import xadmin
 from django.views.generic import TemplateView
 
+from django.conf.urls import url
+from django.conf.urls import include
+from django.contrib import admin
+from compare import views #AH
+
 urlpatterns = [
 	# path('', TemplateView.as_view(template_name='index.html'), name='index'),
-	path('', index, name='index'),
+    url(r'^$',views.index,name='index'), #AH
+    url(r'^compared/',include('compare.urls')), #separate url into each apps
+    path('', index, name='index'),
 	path('xadmin/', xadmin.site.urls),
 	# path('admin/', admin.site.urls),
 	path('users/', include('users.urls'), name='users'),
 	path('active/<slug:active_code>/', ActiveView.as_view(), name='active'),
-	path('reset/<slug:reset_code>/', ResetView.as_view(), name='reset')
+	path('reset/<slug:reset_code>/', ResetView.as_view(), name='reset'),
 	# path('login/', TemplateView.as_view(template_name='login.html'), name='login')
 	# path('myadmin/', admin_site.urls)
+
 ]

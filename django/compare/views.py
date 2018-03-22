@@ -1,21 +1,27 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import CompareList,Result
+from .models import CompareList
+from users.models import User
+from schools.models import School
 
 def index(request):
-    my_dict={'dic_compare':'This is from compare.'}
-    #return HttpResponse("<em>compare</em>")
-    return render(request,'index.html',context=my_dict)
+    result(request,'data')
 
-def result(request):
-    compareList=CompareList.objects.order_by('data')
-    my_dict={'dic_compare':'This is from compare.'}
-    return render(request,'index.html',context=my_dict)
+def add(request,u,s):
+    #cl=CompareList.objects.Create(user=u,school=s)
+    if type(u)==User and type(s)==School and u and s: # not blank
+        relation=CompareList(user=u,school=s)
+        relation.save()
+        return HttpResponse('add to compare list succeeded.')
+    else:
+        return HttpResponse('add to compare list failed.')
 
-# def school_info(request, centre_code):
-# 	school = School.object.filter(centre_code=centre_code)
-# 	name = school.centre_name
-# 	return HttpResponse("You are look at school %s.".format(name))
+def remove(request,u,s):
+    #cl=CompareList.objects.filter(user__name=uname,school__name=sname)
+    cl=CompareList.objects.filter(user=u,school=s).delete()
+    return HttpResponse("%s deleted from %s's compare list".format(s,u))
 
-
-# Create your views here.
+def result(request,u,order_by='data'):
+    compareList=CompareList.objects.order_by(order_by).filter(user=u)
+    #my_dict={'compareList':'This is from compare.'}
+    return render(request,'compare.html',context=compareList)

@@ -1,10 +1,27 @@
 from django.db import models
-from schools.models import Kindergarten
+from users.models import User
+from schools.models import School
 
 class CompareList(models.Model):
-    Kindergarten = Kindergarten
-    rating = models.IntegerField()
-    #compared = models.ForeignKey()#TODO
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    school = models.ForeignKey('School', on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
+    #rank_type = models.IntegerField()
+
+    # def __str__(self):
+    #     return self.name
+
+# class CompareRecord(models.Model):
+#     list=models.ForeignKey('CompareList',on_delete=models.CASCADE)
+#     user = models.ManyToOneField(
+#         User,
+#         on_delete=models.CASCADE,
+#         primary_key=True,)
+#     school = user = models.ManyToOneField(
+#         School,
+#         on_delete=models.CASCADE,
+#         primary_key=True,)
+#     #compared = models.ForeignKey()#TODO
+#
+#     def __str__(self):
+#         return self.name

@@ -6,7 +6,7 @@ import datetime as dt
 from django.contrib.auth.models import AbstractUser
 
 from schools.models import School
-from compare.models import CompareList
+#from compare.models import CompareList
 
 # Create your models here.
 
